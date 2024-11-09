@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio de Pizzas Nordestinas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #f39c12;
+            text-align: center;
+            padding: 80px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.5em;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-container input,
+        .filter-container select {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            width: 250px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .filter-container input:focus,
+        .filter-container select:focus {
+            border-color: #f39c12;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.5);
+            outline: none;
+        }
+
+        /* Estilo do botão de download */
+        .filter-container .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 35px;
+            background-color: #f39c12; /* Cor igual ao fundo da página */
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .filter-container .download-btn:hover {
+            background-color: #e67e22; /* Cor mais escura para o efeito hover */
+            transform: scale(1.05);
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pizza-category {
+            background-color: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pizza-category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .pizza-category img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .pizza-category:hover img {
+            opacity: 0.85;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .content h3 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .content p {
+            color: #7f8c8d;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #e67e22;
+        }
+
+        .promo-label {
+            background-color: #e67e22;
+            color: #fff;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 25px;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .button {
+            padding: 12px 25px;
+            background-color: #f39c12;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            header p {
+                font-size: 1.3em;
+            }
+
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-container input,
+            .filter-container select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .filter-container .download-btn {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Pizza Nordestina</h1>
+        <p>Sabores autênticos do Nordeste em cada fatia</p>
+    </header>
+
+    <div class="filter-container">
+        <input type="text" id="filterInput" placeholder="Filtrar por nome da pizza" onkeyup="filterPizzas()">
+        <select id="promoFilter" onchange="filterPizzas()">
+            <option value="">Mostrar todas</option>
+            <option value="promo">Mostrar apenas Promoções</option>
+        </select>
+        <!-- Botão de download com estilo atualizado -->
+        <a href="cardapio.jpg" download="Cardapio_Pizzas_Nordestinas" class="download-btn">Baixar Cardápio</a>
+    </div>
+
+    <section class="menu" id="pizzaMenu">
+        <!-- Pizza 1 - Promoção -->
+        <div class="pizza-category promo">
+            <img src="https://www.eusemfronteiras.com.br/wp-content/uploads/2021/06/pizza-carne-de-sol.jpg" alt="Pizza de Carne de Sol">
+            <div class="content">
+                <span class="promo-label">Promoção!</span>
+                <h3>Pizza de Carne de Sol</h3>
+                <p>Carne de sol desfiada, queijo coalho e molho especial, criando a verdadeira experiência nordestina.</p>
+                <span class="price">R$ 39,90</span>
+                <div class="buttons">
+                    <button class="button add-to-cart" onclick="addToCart('Pizza de Carne de Sol', '39.90')">Adicionar ao Carrinho</button>
+                    <button class="button details">Ver Detalhes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pizza 2 - Não Promoção -->
+        <div class="pizza-category">
+            <img src="https://www.sodexo.com.br/~/media/SodexoBrasil/pizza-de-baiao-de-dois.jpg" alt="Pizza de Baião de Dois">
+            <div class="content">
+                <h3>Pizza de Baião de Dois</h3>
+                <p>Feijão verde, arroz, queijo coalho e carne de sol, tudo junto em uma deliciosa pizza.</p>
+                <span class="price">R$ 42,90</span>
+                <div class="buttons">
+                    <button class="button add-to-cart" onclick="addToCart('Pizza de Baião de Dois', '42.90')">Adicionar ao Carrinho</button>
+                    <button class="button details">Ver Detalhes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pizza 3 - Promoção -->
+        <div class="pizza-category promo">
+            <img src="https://img.r7.com/images/pizza-carne-de-sol-mandacaru-750-9-6-2021-1-22-48-425.jpg" alt="Pizza de Peixe">
+            <div class="content">
+                <span class="promo-label">Promoção!</span>
+                <h3>Pizza de Peixe</h3>
+                <p>Peixe fresco, molho de camarão e queijo coalho, uma mistura incrível do mar com o nordeste.</p>
+                <span class="price">R$ 44,90</span>
+                <div class="buttons">
+                    <button class="button add-to-cart" onclick="addToCart('Pizza de Peixe', '44.90')">Adicionar ao Carrinho</button>
+                    <button class="button details">Ver Detalhes</button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Pizza Nordestina | Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function filterPizzas() {
+            let input = document.getElementById("filterInput").value.toLowerCase();
+            let promoFilter = document.getElementById("promoFilter").value;
+            let pizzas = document.querySelectorAll(".pizza-category");
+
+            pizzas.forEach(function(pizza) {
+                let pizzaName = pizza.querySelector("h3").textContent.toLowerCase();
+                let isPromo = pizza.classList.contains("promo");
+
+                if (
+                    pizzaName.includes(input) && 
+                    (promoFilter === "" || (promoFilter === "promo" && isPromo))
+                ) {
+                    pizza.style.display = "block";
+                } else {
+                    pizza.style.display = "none";
+                }
+            });
+        }
+
+        function addToCart(pizzaName, price) {
+            alert(`Pizza ${pizzaName} foi adicionada ao carrinho! Preço: R$${price}`);
+        }
+    </script>
+
+</body>
+</html>
